@@ -1,8 +1,6 @@
 import UIKit
 
-class CoinViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    
+class CoinViewController: UIViewController {
     
     @IBOutlet weak var coinLabel: UILabel!
     @IBOutlet weak var coinRate: UILabel!
@@ -24,36 +22,6 @@ class CoinViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         valueLabel.text = pickerData1.first
         coinManager.getCoin(currencyCoin: pickerData0.first!, currency: pickerData1.first!)
     }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if component == 0 {
-            return pickerData0.count
-        } else {
-            return pickerData1.count
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0 {
-            return pickerData0[row]
-        } else {
-            return pickerData1[row]
-        }    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerView.reloadComponent(0)
-        let coinLabel1 = pickerView.selectedRow(inComponent: 0)
-        let valueLabel1 = pickerView.selectedRow(inComponent: 1)
-        let coin = pickerData0[coinLabel1]
-        let value = pickerData1[valueLabel1]
-        coinLabel.text = coin
-        valueLabel.text = value
-        coinManager.getCoin(currencyCoin: coin, currency: value)
-    }
 }
     
     
@@ -73,3 +41,44 @@ class CoinViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             print(error)
         }
     }
+
+//MARK: - UIPickerViewDelegate
+
+extension CoinViewController: UIPickerViewDelegate {
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return pickerData0[row]
+        } else {
+            return pickerData1[row]
+        }
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        pickerView.reloadComponent(0)
+        let coinLabel1 = pickerView.selectedRow(inComponent: 0)
+        let valueLabel1 = pickerView.selectedRow(inComponent: 1)
+        let coin = pickerData0[coinLabel1]
+        let value = pickerData1[valueLabel1]
+        coinLabel.text = coin
+        valueLabel.text = value
+        coinManager.getCoin(currencyCoin: coin, currency: value)
+    }
+}
+
+//MARK: - UIPickerViewDataSource
+
+extension CoinViewController: UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return pickerData0.count
+        } else {
+            return pickerData1.count
+        }
+    }
+}
